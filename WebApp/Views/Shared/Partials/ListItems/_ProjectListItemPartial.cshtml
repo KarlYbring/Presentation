@@ -17,7 +17,7 @@
             <img src="~/images/projects/project-template.svg" alt="template project" />
         </div>
         <h6 class="project-name">@Model.ProjectName</h6>
-        <span class="client-name">Nackademin AB</span>
+        <span class="client-name">@Html.Raw(Model.ClientName)</span>
         <div id="project-actions-container">
             <button type="button" data-type="dropdown" data-target="#project-dropdown-@Model.Id" class="btn-action">
                 <i class="fa-solid fa-ellipsis"></i>

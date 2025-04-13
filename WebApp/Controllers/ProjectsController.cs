@@ -120,6 +120,8 @@ public class ProjectsController(IProjectService projectService, IStatusService s
                 var projectResult = await _projectService.GetProjectsByUserIdAsync(userId);
                 if (projectResult.Succeeded && projectResult.Result != null)
                 {
+                       
+                   
                     projectViewModels = projectResult.Result.Select(project => new ProjectViewModel
                     {
                         Id = project.Id,
@@ -128,7 +130,24 @@ public class ProjectsController(IProjectService projectService, IStatusService s
                         ClientName = project.Client?.ClientName ?? "Unknown",
                         Budget = project.Budget,
                         StatusId = project.StatusId,
+                        ClientId = project.ClientId
+                 
                     }).ToList();
+
+
+                     //fick de inte att funka att hämta ut client från databasen
+                    foreach (var project in projectViewModels)
+                    {
+
+                        if (!string.IsNullOrEmpty(project.ClientId))
+                        {
+                            var clientResult = await _clientService.GetClientByIdAsync(project.ClientId);
+
+                            project.ClientName = clientResult.Result!.ClientName;
+                        }                       
+                    }
+
+
                 }
             }
             
