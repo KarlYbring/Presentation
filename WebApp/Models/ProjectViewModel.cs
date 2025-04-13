@@ -13,5 +13,7 @@ public class ProjectViewModel
     public string TimeLeft { get; set; } = null!;
     public decimal? Budget { get; set; }
     public int StatusId { get; set; }
+    public int ClientId { get; set; }
+
     public IEnumerable<string> Members { get; set; } = [];
 }

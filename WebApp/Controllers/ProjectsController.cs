@@ -113,7 +113,6 @@ public class ProjectsController(IProjectService projectService, IStatusService s
         List<ProjectViewModel> projectViewModels = [];
         try
         {
-            //var projectResult = await _projectService.GetProjectsAsync();
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (!string.IsNullOrEmpty(userId))

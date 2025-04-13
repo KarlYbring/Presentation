@@ -1,7 +1,7 @@
 ﻿@model EditProjectViewModel
 @{
-	var projectName = Model.ProjectName;
-	var clientId = Model.ClientId;
+    var projectName = Model.ProjectName;
+    var clientId = Model.ClientId;
 }
 
 
@@ -15,7 +15,7 @@
 }
 
 
-@if(Model != null || !string.IsNullOrEmpty(Model?.Id))
+@if (Model != null || !string.IsNullOrEmpty(Model?.Id))
 {
     <div id="editProjectModal" class="modal">
         <div class="card">
@@ -112,4 +112,5 @@
 
     </script>
 
+}
 }
