@@ -1,0 +1,78 @@
+﻿@model ProjectsViewModel
+
+@{
+    ViewData["Title"] = "Projects";
+}
+
+
+<partial name="Partials/Project/_AddProjectModal" model="Model.AddProjectViewModel" />
+
+
+
+
+<section id="projects">
+    <div class="section-header">
+        <h1>@ViewData["Title"]</h1>
+        <button type="button" data-type="modal" data-target="#addProjectModal" class="btn btn-add"><span>Add Project</span></button>
+    </div>
+
+
+    <div class="project-list">
+        @if (Model.Projects != null && Model.Projects.Any())
+        {
+            @foreach (var project in Model.Projects)
+            {
+                @await Html.PartialAsync("~/Views/Shared/Partials/ListItems/_ProjectListItemPartial.cshtml", project)
+            }
+        }
+
+    </div>
+
+    <div id="editProjectModalContainer"></div>
+</section>
+
+
+<script src="~/js/validate.js"></script>
+<script>
+    document.querySelector("#add-project-modal form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        const response = await fetch("/Projects/Create", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            window.location.href = "/admin/projects";
+        } else {
+            showValidationErrors(result.errors);
+        }
+    });
+
+    document.querySelector("#editProjectModal form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        const response = await fetch("/Projects/Update", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            window.location.href = "/admin/projects";
+        } else {
+            showValidationErrors(result.errors);
+        }
+    });
+
+
+</script>
