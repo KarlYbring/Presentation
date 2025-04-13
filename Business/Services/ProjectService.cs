@@ -14,6 +14,7 @@ public interface IProjectService
     Task<ProjectResult> CreateProjectAsync(AddProjectFormData formData);
     Task<ProjectResult> UpdateProjectAsync(EditProjectFormData formData);
     Task<ProjectResult> DeleteProjectAsync(string id);
+    Task<ProjectResult<IEnumerable<Project>>> GetProjectsByUserIdAsync(string userId);
 }
 
 public class ProjectService(IProjectRepository projectRepository, IStatusService statusService) : IProjectService
@@ -69,6 +70,22 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
         return new ProjectResult<IEnumerable<Project>> { Succeeded = true, StatusCode = 200, Result = response.Result };
     }
 
+    public async Task<ProjectResult<IEnumerable<Project>>> GetProjectsByUserIdAsync(string userId)
+    {
+        var response = await _projectRepository.GetAllAsync
+            (
+                orderByDescending: true,
+                sortBy: x => x.Created,
+                where: x => x.UserId == userId,
+                take: 0,
+                include => include.User,
+                include => include.Client,
+                include => include.Status
+            );
+
+        return new ProjectResult<IEnumerable<Project>> { Succeeded = true, StatusCode = 200, Result = response.Result };
+    }
+
     public async Task<ProjectResult<Project>> GetProjectAsync(string Id)
     {
         var response = await _projectRepository.GetAsync
@@ -83,6 +100,8 @@ public class ProjectService(IProjectRepository projectRepository, IStatusService
             ? new ProjectResult<Project> { Succeeded = true, StatusCode = 200, Result = response.Result }
             : new ProjectResult<Project> { Succeeded = false, StatusCode = 404, Error = $"Project '{Id}' not found." };
     }
+
+
 
 
 

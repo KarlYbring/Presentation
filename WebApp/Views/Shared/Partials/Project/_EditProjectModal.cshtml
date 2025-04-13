@@ -3,6 +3,8 @@
 	var projectName = Model.ProjectName;
 	var clientId = Model.ClientId;
 }
+
+
 @{
     var statusText = Model.StatusId switch
     {
@@ -78,6 +80,7 @@
                             <option value="">-- Select status --</option>
                             <option value="1" selected="@(Model.StatusId == 1)">Started</option>
                             <option value="2" selected="@(Model.StatusId == 2)">Completed</option>
+                            <option value="3" selected="@(Model.StatusId == 3)">Progress</option>
                         </select>
                         <span asp-validation-for="StatusId" class="text-danger"></span>
                     </div>

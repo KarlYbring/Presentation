@@ -4,7 +4,7 @@
     {
         1 => "Started",
         2 => "Completed",
-        _ => "Unknown"
+        3 => "Progress"
     };
 }
 
@@ -12,17 +12,7 @@
 <div class="project card" data-project-id="@Model.Id">
     <div class="card-header">
         <div class="project-image">
-            @if (!string.IsNullOrEmpty(Model.Image))
-            {
-                <img src="https://cms24asp1.blob.core.windows.net/uploads/@Model.Image" />
-
-                @* <img src="https://cms24asp1.blob.core.windows.net/uploads/@Model.Image" alt="template project" /> @
-        @ <img src="/images/uploads/@Model.ImageFileName" alt="template project" /> *@
-            }
-            else
-            {
-                <img src="~/images/projects/project-template.svg" alt="template project" />
-            }
+            <img src="~/images/projects/project-template.svg" alt="template project" />
         </div>
         <h6 class="project-name">@Model.ProjectName</h6>
         <span class="client-name">Nackademin AB</span>

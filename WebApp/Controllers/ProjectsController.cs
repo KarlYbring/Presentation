@@ -5,6 +5,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using WebApp.Models;
 
 namespace WebApp.Controllers;
@@ -112,20 +113,26 @@ public class ProjectsController(IProjectService projectService, IStatusService s
         List<ProjectViewModel> projectViewModels = [];
         try
         {
-            var projectResult = await _projectService.GetProjectsAsync();
-            if (projectResult.Succeeded && projectResult.Result != null)
-            {
-                projectViewModels = projectResult.Result.Select(project => new ProjectViewModel
-                {
-                    Id = project.Id,
-                    ProjectName = project.ProjectName,
-                    Description = project.Description!,
-                    ClientName = project.Client?.ClientName ?? "Unknown",
-                    Budget =project.Budget,
-                     StatusId = project.StatusId,
-                }).ToList();
-            }
+            //var projectResult = await _projectService.GetProjectsAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var projectResult = await _projectService.GetProjectsByUserIdAsync(userId);
+                if (projectResult.Succeeded && projectResult.Result != null)
+                {
+                    projectViewModels = projectResult.Result.Select(project => new ProjectViewModel
+                    {
+                        Id = project.Id,
+                        ProjectName = project.ProjectName,
+                        Description = project.Description!,
+                        ClientName = project.Client?.ClientName ?? "Unknown",
+                        Budget = project.Budget,
+                        StatusId = project.StatusId,
+                    }).ToList();
+                }
+            }
+            
         }
         catch (Exception ex)
         {
